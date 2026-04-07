@@ -5,7 +5,7 @@ using UnityEngine;
 namespace com.mutant.packagemanager.Editor
 {
 	//[CreateAssetMenu(fileName = "PublilcGitRepoData", menuName = "PublilcGitRepoData", order = 0)]
-	public class PublilcGitRepoData : ScriptableObject
+	internal class PublilcGitRepoData : ScriptableObject
 	{
 		public List<Data> Value
 		{

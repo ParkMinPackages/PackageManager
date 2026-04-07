@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace com.mutant.packagemanager.Editor
 {
-	public class PackageManagerWindow : EditorWindow
+	internal class PackageManagerWindow : EditorWindow
 	{
 		async Awaitable CreateGUI() {
 			if (_cts != null) {

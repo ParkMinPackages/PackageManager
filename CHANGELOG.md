@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [1.1.1] - 2026-04-07
+### 외부에서 참조 못하게 internal로 변경, assemblydefinition 옵션 변경
+
 ## [1.1.0] - 2026-04-07
 ### 필수 package 목록들 추가, 로컬 패키지 폴더 기능 추가
 

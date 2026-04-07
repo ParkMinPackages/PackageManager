@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 namespace com.mutant.packagemanager.Editor
 {
-	public static class GitRestAPI
+	internal static class GitRestAPI
 	{
 		//GetOrganizationReposAsync
 		public static async Awaitable<List<Repo>> GetOrganizationReposAsync(string personalAccessToken, string organization) {

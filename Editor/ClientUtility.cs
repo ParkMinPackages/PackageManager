@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace com.mutant.packagemanager.Editor
 {
-	public static class ClientUtility
+	internal static class ClientUtility
 	{
 		static bool _isBusy;
 		const string _progressBarTitle = "Mutant Package Manager";

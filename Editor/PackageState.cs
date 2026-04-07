@@ -1,6 +1,6 @@
 ﻿namespace com.mutant.packagemanager.Editor
 {
-	public enum PackageState
+	internal enum PackageState
 	{
 		UnInstalled,
 		Updateable,

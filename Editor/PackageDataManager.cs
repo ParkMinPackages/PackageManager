@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace com.mutant.packagemanager.Editor
 {
-	public static class PackageDataManager
+	internal static class PackageDataManager
 	{
 		// public static async Awaitable<List<PackageData>> asd(string gitURL, CancellationToken cancellationToken) {
 		// 	

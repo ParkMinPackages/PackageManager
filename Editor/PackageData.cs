@@ -2,7 +2,7 @@
 
 namespace com.mutant.packagemanager.Editor
 {
-	public struct PackageData
+	internal struct PackageData
 	{
 		public string RepoName;
 		public string DisplayName;

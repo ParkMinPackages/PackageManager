@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace com.mutant.packagemanager.Editor
 {
-    public class Menu
+    internal class Menu
     {
         [MenuItem("Mutant/PackageManager")]
         static void Execute()
