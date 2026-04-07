@@ -46,7 +46,7 @@ namespace com.mutant.packagemanager.Editor
 				packageData.PackageName = remotePackageJson.name;
 				packageData.CurrentCommitHash = unityPackageInfo == null || unityPackageInfo.git == null ? null : unityPackageInfo.git.hash;
 				packageData.RemoteCommitHash = remoteLastCommitHash;
-				packageData.IsEmbed = unityPackageInfo.source == PackageSource.Embedded;
+				packageData.IsEmbed = unityPackageInfo == null ? false : unityPackageInfo.source == PackageSource.Embedded;
 
 				packageDatas.Add(packageData);
 			}

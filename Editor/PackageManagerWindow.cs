@@ -105,6 +105,10 @@ namespace com.mutant.packagemanager.Editor
 				refreshStateLabel.style.display = DisplayStyle.None;
 			}
 			catch (OperationCanceledException) { }
+			catch (Exception e) {
+				Debug.LogException(e);
+				throw;
+			}
 		}
 		void OnDisable() {
 			if (_cts != null) {
