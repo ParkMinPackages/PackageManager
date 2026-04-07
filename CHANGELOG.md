@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [1.1.2] - 2026-04-07
+### gitingore 수정해서 .unitypackage 무시안하게 변경
+
 ## [1.1.1] - 2026-04-07
 ### 외부에서 참조 못하게 internal로 변경, assemblydefinition 옵션 변경
 
