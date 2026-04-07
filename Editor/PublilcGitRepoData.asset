@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3980b44eab744e9ba0f63b3def88c12, type: 3}
+  m_Name: PublilcGitRepoData
+  m_EditorClassIdentifier: Mutant.PackageManager.Editor::com.mutant.packagemanager.Editor.PublilcGitRepoData
+  _value:
+  - DisplayName: GlitchEnzo.NuGetForUnity
+    CloneURL: https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity
+    PackageName: com.github-glitchenzo.nugetforunity
+  - DisplayName: Cysharp.UniTask
+    CloneURL: https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask
+    PackageName: com.cysharp.unitask
+  - DisplayName: Cysharp.R3
+    CloneURL: https://github.com/Cysharp/R3.git?path=src/R3.Unity/Assets/R3.Unity
+    PackageName: com.cysharp.r3
+  - DisplayName: Eflatun.SceneReference
+    CloneURL: git+https://github.com/starikcetin/Eflatun.SceneReference.git#upm
+    PackageName: com.eflatun.scenereference
+  - DisplayName: annulusgames.LitMotion
+    CloneURL: https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion
+    PackageName: com.annulusgames.lit-motion

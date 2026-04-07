@@ -1,5 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Label text="Mutant Package Manager" name="Title" style="-unity-text-align: upper-center; -unity-font-style: bold; color: rgb(0, 255, 37);"/>
+    <ui:Button text="Packages Folder" name="PacakgesFolderButton" style="width: 126px; height: 20px; align-self: center;"/>
     <ui:Foldout text="Git Personal Access Token" value="false" name="PersonalAccessTokenFoldout" style="-unity-font-style: bold;">
         <ui:TextField label="" placeholder-text="Private Mutant Package를 사용하기 위해서 채워야합니다." name="PersonalAccessTokenTextField"/>
     </ui:Foldout>

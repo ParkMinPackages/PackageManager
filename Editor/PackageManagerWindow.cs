@@ -33,10 +33,14 @@ namespace com.mutant.packagemanager.Editor
 				"Packages/com.mutant.packagemanager/Editor/PackageManagerWindow.Item.uxml"
 			);
 
+			PublilcGitRepoData publicGitRepoData = AssetDatabase.LoadAssetAtPath<PublilcGitRepoData>(
+				"Packages/com.mutant.packagemanager/Editor/PublilcGitRepoData.asset"
+			);
 
 			rootVisualElement.Clear();
 			rootVisualElement.Add(mainTreeAsset.CloneTree());
 
+			Button pacakgesFolderButton = rootVisualElement.Q<Button>("PacakgesFolderButton");
 			Foldout personalAccessTokenFoldout = rootVisualElement.Q<Foldout>("PersonalAccessTokenFoldout");
 			TextField personalAccessTokenTextField = rootVisualElement.Q<TextField>("PersonalAccessTokenTextField");
 			Button installSelectedButton = rootVisualElement.Q<Button>("InstallSelectedButton");
@@ -45,6 +49,16 @@ namespace com.mutant.packagemanager.Editor
 			ScrollView scrollView = rootVisualElement.Q<ScrollView>();
 			Label refreshStateLabel = rootVisualElement.Q<Label>("RefreshStateLabel");
 			List<GitItemUI> itemUiList = new List<GitItemUI>();
+
+			//pacakgesFolderButton 구현
+			pacakgesFolderButton.clicked += async () =>
+			{
+				UnityEngine.Object folder = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Packages/com.mutant.packagemanager/UnityPackages");
+				Selection.activeObject = folder;
+				EditorUtility.FocusProjectWindow();
+				EditorGUIUtility.PingObject(folder);
+				AssetDatabase.OpenAsset(folder);
+			};
 
 			//PersonalAccessToken UI 구현
 			UpdatePersonalAccessTokenFoldout(personalAccessTokenFoldout);
@@ -86,21 +100,15 @@ namespace com.mutant.packagemanager.Editor
 				if (_cts.IsCancellationRequested) throw new OperationCanceledException();
 
 				//Public Repo
-				PublicGitItemUI uniTaskItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, scrollView,
-					"Cysharp.UniTask",
-					"https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-					"com.cysharp.unitask",
-					afterButtonClickAction
-				);
-				itemUiList.Add(uniTaskItemUI);
-
-				PublicGitItemUI eflatunSceneReferenceItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, scrollView,
-					"Eflatun.SceneReference",
-					"git+https://github.com/starikcetin/Eflatun.SceneReference.git#upm",
-					"com.eflatun.scenereference",
-					afterButtonClickAction
-				);
-				itemUiList.Add(eflatunSceneReferenceItemUI);
+				foreach (PublilcGitRepoData.Data data in publicGitRepoData.Value) {
+					PublicGitItemUI publicGitItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, scrollView,
+						data.DisplayName,
+						data.CloneURL,
+						data.PackageName,
+						afterButtonClickAction
+					);
+					itemUiList.Add(publicGitItemUI);
+				}
 
 				//Private Organization Repo
 				List<PackageData> requestAsync = await PackageDataManager.RequestToOrganizationAsync(personalAccessToken, organization, exceptRepos, _cts.Token);
