@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Item" style="flex-grow: initial; flex-direction: row; justify-content: space-between; flex-shrink: initial; align-items: center;">
+        <ui:VisualElement style="flex-grow: initial; flex-direction: row; flex-shrink: initial;">
+            <ui:Toggle name="Toggle"/>
+            <ui:Label text="Label" name="DisplayNameLabel" style="-unity-font-style: bold;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: initial; flex-direction: row; align-items: center; flex-shrink: initial;">
+            <ui:Label text="설치안됨" name="StateLabel" class="Installed" style="opacity: 1; -unity-font-style: bold;"/>
+            <ui:Button text="설치" name="InstallButton" style="-unity-font-style: bold;"/>
+            <ui:Button text="삭제" name="RemoveButton" style="-unity-font-style: bold;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
