@@ -4,6 +4,7 @@
 	{
 		UnInstalled,
 		Updateable,
-		Installed
+		Installed,
+		Embedded,
 	}
 }

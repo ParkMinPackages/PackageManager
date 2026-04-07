@@ -56,15 +56,17 @@ namespace com.mutant.packagemanager.Editor
 			});
 
 			//_installSelectedButton 구현
-			installSelectedButton.clicked += () =>
+			installSelectedButton.clicked += async () =>
 			{
-				ClientUtility.AddAndRemoveAsyncWithProgressBar(itemUiList.Where(ui => ui.Checked).Select(ui => ui.GitURL).ToArray(), null);
+				await ClientUtility.AddAndRemoveAsyncWithProgressBar(itemUiList.Where(ui => ui.Checked).Select(ui => ui.GitURL).ToArray(), null);
+				CreateGUI();
 			};
 
 			//_removeSelectedButton 구현
-			removeSelectedButton.clicked += () =>
+			removeSelectedButton.clicked += async () =>
 			{
-				ClientUtility.AddAndRemoveAsyncWithProgressBar(null, itemUiList.Where(ui => ui.Checked).Select(ui => ui.PackageName).ToArray());
+				await ClientUtility.AddAndRemoveAsyncWithProgressBar(null, itemUiList.Where(ui => ui.Checked).Select(ui => ui.PackageName).ToArray());
+				CreateGUI();
 			};
 
 			//_refreshButton 구현
@@ -75,6 +77,11 @@ namespace com.mutant.packagemanager.Editor
 
 			//아이템 채우기 구현
 			try {
+				Action afterButtonClickAction = () =>
+				{
+					CreateGUI();
+				};
+
 				PackageCollection packageCollection = await ClientUtility.ListAsync();
 				if (_cts.IsCancellationRequested) throw new OperationCanceledException();
 
@@ -82,14 +89,16 @@ namespace com.mutant.packagemanager.Editor
 				PublicGitItemUI uniTaskItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, scrollView,
 					"Cysharp.UniTask",
 					"https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-					"com.cysharp.unitask"
+					"com.cysharp.unitask",
+					afterButtonClickAction
 				);
 				itemUiList.Add(uniTaskItemUI);
 
 				PublicGitItemUI eflatunSceneReferenceItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, scrollView,
 					"Eflatun.SceneReference",
 					"git+https://github.com/starikcetin/Eflatun.SceneReference.git#upm",
-					"com.eflatun.scenereference"
+					"com.eflatun.scenereference",
+					afterButtonClickAction
 				);
 				itemUiList.Add(eflatunSceneReferenceItemUI);
 
@@ -97,7 +106,7 @@ namespace com.mutant.packagemanager.Editor
 				List<PackageData> requestAsync = await PackageDataManager.RequestToOrganizationAsync(personalAccessToken, organization, exceptRepos, _cts.Token);
 
 				foreach (PackageData packageData in requestAsync) {
-					GitItemUI eachGitItemUI = new GitItemUI(itemTreeAsset, scrollView, packageData.DisplayName, packageData.GitCloneURL, packageData.PackageName);
+					GitItemUI eachGitItemUI = new GitItemUI(itemTreeAsset, scrollView, packageData.DisplayName, packageData.GitCloneURL, packageData.PackageName, afterButtonClickAction);
 					eachGitItemUI.State = packageData.State;
 					itemUiList.Add(eachGitItemUI);
 				}
@@ -134,9 +143,16 @@ namespace com.mutant.packagemanager.Editor
 		//Type
 		class PublicGitItemUI : GitItemUI
 		{
-			public PublicGitItemUI(PackageCollection packageCollection, VisualTreeAsset itemTreeAsset, VisualElement parent, string displayName, string gitURL, string packageName) : base(itemTreeAsset, parent, displayName, gitURL, packageName) {
-				if (packageCollection.Any(info => info.name == packageName))
-					State = PackageState.Installed;
+			public PublicGitItemUI(PackageCollection packageCollection, VisualTreeAsset itemTreeAsset, VisualElement parent, string displayName, string gitURL, string packageName, Action afterButtonClickAction) : base(itemTreeAsset, parent, displayName, gitURL, packageName, afterButtonClickAction) {
+				UnityEditor.PackageManager.PackageInfo packageInfo = packageCollection.FirstOrDefault(info => info.name == packageName);
+				if (packageInfo != null) {
+					if (packageInfo.source == PackageSource.Embedded) {
+						State = PackageState.Embedded;
+					}
+					else {
+						State = PackageState.Installed;
+					}
+				}
 				else
 					State = PackageState.UnInstalled;
 			}
@@ -144,18 +160,25 @@ namespace com.mutant.packagemanager.Editor
 
 		class GitItemUI : ItemUI
 		{
-			public GitItemUI(VisualTreeAsset itemTreeAsset, VisualElement parent, string displayName, string gitURL, string packageName) : base(itemTreeAsset, parent) {
+			public GitItemUI(VisualTreeAsset itemTreeAsset, VisualElement parent, string displayName, string gitURL, string packageName, Action afterButtonClickAction) : base(itemTreeAsset, parent) {
 				_gitURL = gitURL;
 				_packageName = packageName;
 				DisplayName = displayName;
 
-				_installButton.clicked += () =>
+				_installButton.clicked += async () =>
 				{
-					ClientUtility.AddAsyncWithProgressBar(gitURL);
+					await ClientUtility.AddAsyncWithProgressBar(gitURL);
+					afterButtonClickAction?.Invoke();
 				};
-				_removeButton.clicked += () =>
+				_removeButton.clicked += async () =>
 				{
-					ClientUtility.RemoveAsyncWithProgressBar(packageName);
+					await ClientUtility.RemoveAsyncWithProgressBar(packageName);
+					afterButtonClickAction?.Invoke();
+				};
+				_embedButton.clicked += async () =>
+				{
+					await ClientUtility.EmbedAsyncWithProgressBar(packageName);
+					afterButtonClickAction?.Invoke();
 				};
 			}
 			public string GitURL
@@ -179,6 +202,7 @@ namespace com.mutant.packagemanager.Editor
 				_stateLabel = templateContainer.Q<Label>("StateLabel");
 				_installButton = templateContainer.Q<Button>("InstallButton");
 				_removeButton = templateContainer.Q<Button>("RemoveButton");
+				_embedButton = templateContainer.Q<Button>("EmbedButton");
 
 				State = PackageState.UnInstalled;
 
@@ -196,14 +220,30 @@ namespace com.mutant.packagemanager.Editor
 					switch (_state) {
 						case PackageState.UnInstalled:
 							_stateLabel.text = "설치안됨";
+							_installButton.enabledSelf = true;
+							_removeButton.enabledSelf = false;
+							_embedButton.enabledSelf = false;
 							_stateLabel.style.color = new StyleColor(StyleKeyword.Null);
 							break;
 						case PackageState.Updateable:
 							_stateLabel.text = "업데이트가능";
+							_installButton.enabledSelf = true;
+							_removeButton.enabledSelf = true;
+							_embedButton.enabledSelf = true;
 							_stateLabel.style.color = new StyleColor(Color.yellow);
 							break;
 						case PackageState.Installed:
 							_stateLabel.text = "설치됨";
+							_installButton.enabledSelf = true;
+							_removeButton.enabledSelf = true;
+							_embedButton.enabledSelf = true;
+							_stateLabel.style.color = new StyleColor(Color.green);
+							break;
+						case PackageState.Embedded:
+							_stateLabel.text = "Embed";
+							_installButton.enabledSelf = false;
+							_removeButton.enabledSelf = false;
+							_embedButton.enabledSelf = false;
 							_stateLabel.style.color = new StyleColor(Color.green);
 							break;
 					}
@@ -229,6 +269,7 @@ namespace com.mutant.packagemanager.Editor
 			protected Label _stateLabel;
 			protected Button _installButton;
 			protected Button _removeButton;
+			protected Button _embedButton;
 			PackageState _state;
 			string _displayName;
 		}

@@ -16,7 +16,7 @@ namespace com.mutant.packagemanager.Editor
 			get
 			{
 				if (IsEmbed) {
-					return PackageState.Installed;
+					return PackageState.Embedded;
 				}
 
 				if (CurrentCommitHash == null) {

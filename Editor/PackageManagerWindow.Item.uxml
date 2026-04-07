@@ -8,6 +8,7 @@
             <ui:Label text="설치안됨" name="StateLabel" class="Installed" style="opacity: 1; -unity-font-style: bold;"/>
             <ui:Button text="설치" name="InstallButton" style="-unity-font-style: bold;"/>
             <ui:Button text="삭제" name="RemoveButton" style="-unity-font-style: bold;"/>
+            <ui:Button text="Embed" name="EmbedButton" style="-unity-font-style: bold;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

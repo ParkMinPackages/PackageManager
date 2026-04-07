@@ -172,6 +172,55 @@ namespace com.mutant.packagemanager.Editor
 		}
 
 		// =========================
+		// Embed
+		// =========================
+		public static Awaitable<UnityEditor.PackageManager.PackageInfo> EmbedAsync(string packageName) {
+			if (string.IsNullOrWhiteSpace(packageName))
+				throw new ArgumentException("packageName is null or empty.", nameof(packageName));
+
+			EnsureNotBusy();
+
+			_isBusy = true;
+
+			EmbedRequest request = Client.Embed(packageName);
+			AwaitableCompletionSource<UnityEditor.PackageManager.PackageInfo> tcs =
+				new AwaitableCompletionSource<UnityEditor.PackageManager.PackageInfo>();
+
+			EditorApplication.update += Update;
+			return tcs.Awaitable;
+
+			void Update() {
+				if (!request.IsCompleted)
+					return;
+
+				EditorApplication.update -= Update;
+				_isBusy = false;
+
+				if (request.Status == StatusCode.Success) {
+					tcs.TrySetResult(request.Result);
+					return;
+				}
+
+				string msg = request.Error != null
+					? request.Error.message
+					: "Embed failed.";
+
+				tcs.TrySetException(new Exception(msg));
+			}
+		}
+
+		public static async Awaitable<UnityEditor.PackageManager.PackageInfo> EmbedAsyncWithProgressBar(string packageName) {
+			EditorUtility.DisplayProgressBar(_progressBarTitle, "로컬 패키지로 변환 중..", 0.9f);
+
+			try {
+				return await EmbedAsync(packageName);
+			}
+			finally {
+				EditorUtility.ClearProgressBar();
+			}
+		}
+
+		// =========================
 		// List
 		// =========================
 		public static Awaitable<UnityEditor.PackageManager.PackageCollection> ListAsync(bool includeIndirect = false) {
