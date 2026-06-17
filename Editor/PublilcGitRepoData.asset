@@ -26,5 +26,5 @@ MonoBehaviour:
     CloneURL: git+https://github.com/starikcetin/Eflatun.SceneReference.git#5.0.0
     PackageName: com.eflatun.scenereference
   - DisplayName: annulusgames.LitMotion
-    CloneURL: https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion#2.0.2
+    CloneURL: https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion#v2.0.2
     PackageName: com.annulusgames.lit-motion
