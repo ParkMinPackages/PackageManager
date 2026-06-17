@@ -17,14 +17,14 @@ MonoBehaviour:
     CloneURL: https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity
     PackageName: com.github-glitchenzo.nugetforunity
   - DisplayName: Cysharp.UniTask
-    CloneURL: https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask
+    CloneURL: https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11
     PackageName: com.cysharp.unitask
   - DisplayName: Cysharp.R3
-    CloneURL: https://github.com/Cysharp/R3.git?path=src/R3.Unity/Assets/R3.Unity
+    CloneURL: https://github.com/Cysharp/R3.git?path=src/R3.Unity/Assets/R3.Unity#1.3.1
     PackageName: com.cysharp.r3
   - DisplayName: Eflatun.SceneReference
-    CloneURL: git+https://github.com/starikcetin/Eflatun.SceneReference.git#upm
+    CloneURL: git+https://github.com/starikcetin/Eflatun.SceneReference.git#5.0.0
     PackageName: com.eflatun.scenereference
   - DisplayName: annulusgames.LitMotion
-    CloneURL: https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion
+    CloneURL: https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion#2.0.2
     PackageName: com.annulusgames.lit-motion
