@@ -8,6 +8,6 @@
     "name": "Mutant"
   },
   "dependencies": {
-    "com.unity.nuget.newtonsoft-json": "3.2.3"
+    "com.unity.nuget.newtonsoft-json": "3.2.2"
   }
 }
