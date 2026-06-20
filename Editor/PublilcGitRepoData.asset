@@ -28,3 +28,6 @@ MonoBehaviour:
   - DisplayName: annulusgames.LitMotion
     CloneURL: https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion#v2.0.2
     PackageName: com.annulusgames.lit-motion
+  - DisplayName: gitamend.unityutils
+    CloneURL: https://github.com/adammyhre/Unity-Utils.git
+    PackageName: com.gitamend.unityutils
