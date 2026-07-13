@@ -35,5 +35,5 @@ MonoBehaviour:
     CloneURL: https://github.com/mackysoft/Navigathena.git?path=Assets/MackySoft/MackySoft.Navigathena#1.1.0
     PackageName: com.mackysoft.navigathena
   - DisplayName: MySceneManager#4.1.1
-    CloneURL: https://github.com/mygamedevtools/scene-loader.git?path=/Packages/com.mygamedevtools.scene-loader#4.1.1
+    CloneURL: https://github.com/mygamedevtools/scene-loader.git#upm/4.1.1
     PackageName: com.mygamedevtools.scene-loader
