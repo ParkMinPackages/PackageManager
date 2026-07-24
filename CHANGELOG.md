@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [2.1.0] - 2026-07-25
+
+### Changed
+- Replaced per-repository GitHub API discovery with a central package catalog.
+- Added a 15-minute local catalog cache and an expired-cache fallback when refresh fails.
+- Compare installed and catalog package versions to determine update availability.
+
 ## [2.0.0] - 2026-07-25
 
 ### Breaking Changes

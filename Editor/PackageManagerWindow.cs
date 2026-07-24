@@ -11,7 +11,7 @@ namespace com.parkminpackages.packagemanager.Editor
 {
 	internal class PackageManagerWindow : EditorWindow
 	{
-		async Awaitable CreateGUI() {
+		async Awaitable CreateGUI(bool forceRefresh = false) {
 			if (_cts != null) {
 				_cts.Cancel();
 				_cts.Dispose();
@@ -22,8 +22,6 @@ namespace com.parkminpackages.packagemanager.Editor
 
 			//초기화
 			string personalAccessToken = PersonalAccessTokenManager.LoadToken();
-			string organization = "ParkMinPackages";
-			string[] exceptRepos = new string[] { "Package-Dev" };
 
 			VisualTreeAsset mainTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
 				"Packages/com.parkminpackages.packagemanager/Editor/PackageManagerWindow.uxml"
@@ -82,10 +80,7 @@ namespace com.parkminpackages.packagemanager.Editor
 			};
 
 			//_refreshButton 구현
-			refreshButton.clicked += () =>
-			{
-				CreateGUI();
-			};
+			refreshButton.clicked += () => { CreateGUI(true); };
 
 			//아이템 채우기 구현
 			try {
@@ -109,7 +104,7 @@ namespace com.parkminpackages.packagemanager.Editor
 				}
 
 				//Private Organization Repo
-				List<PackageData> requestAsync = await PackageDataManager.RequestToOrganizationAsync(personalAccessToken, organization, exceptRepos, _cts.Token);
+				List<PackageData> requestAsync = await PackageDataManager.RequestFromCatalogAsync(personalAccessToken, forceRefresh, _cts.Token);
 
 				foreach (PackageData packageData in requestAsync) {
 					GitItemUI eachGitItemUI = new GitItemUI(itemTreeAsset, scrollView, packageData.DisplayName, packageData.GitCloneURL, packageData.PackageName, afterButtonClickAction);
@@ -121,8 +116,7 @@ namespace com.parkminpackages.packagemanager.Editor
 			}
 			catch (OperationCanceledException) { }
 			catch (Exception e) {
-				Debug.LogException(e);
-				throw;
+				refreshStateLabel.text = e.Message; refreshStateLabel.style.display = DisplayStyle.Flex; Debug.LogWarning(e.Message);
 			}
 		}
 		void OnDisable() {

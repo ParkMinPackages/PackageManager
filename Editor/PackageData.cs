@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace com.parkminpackages.packagemanager.Editor
 {
@@ -8,28 +8,19 @@ namespace com.parkminpackages.packagemanager.Editor
 		public string DisplayName;
 		public string GitCloneURL;
 		public string PackageName;
-		public string RemoteCommitHash;
-		public string CurrentCommitHash;
+		public string RemoteVersion;
+		public string CurrentVersion;
 		public bool IsEmbed;
+
 		public PackageState State
 		{
 			get
 			{
-				if (IsEmbed) {
-					return PackageState.Embedded;
-				}
-
-				if (CurrentCommitHash == null) {
-					return PackageState.UnInstalled;
-				}
-				else if (CurrentCommitHash == RemoteCommitHash) {
-					return PackageState.Installed;
-				}
-				else if (CurrentCommitHash != RemoteCommitHash) {
-					return PackageState.Updateable;
-				}
-
-				throw new NotImplementedException();
+				if (IsEmbed) return PackageState.Embedded;
+				if (string.IsNullOrEmpty(CurrentVersion)) return PackageState.UnInstalled;
+				return string.Equals(CurrentVersion, RemoteVersion, StringComparison.Ordinal)
+					? PackageState.Installed
+					: PackageState.Updateable;
 			}
 		}
 	}
