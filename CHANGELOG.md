@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [2.1.2] - 2026-07-25
+
+### Fixed
+- Restored Unity's parameterless CreateGUI entry point for the Package Manager window.
+
 ## [2.1.1] - 2026-07-25
 
 ### Fixed

@@ -11,7 +11,11 @@ namespace com.parkminpackages.packagemanager.Editor
 {
 	internal class PackageManagerWindow : EditorWindow
 	{
-		async Awaitable CreateGUI(bool forceRefresh = false) {
+		async Awaitable CreateGUI() {
+			await CreateGUIAsync(false);
+		}
+
+		async Awaitable CreateGUIAsync(bool forceRefresh) {
 			if (_cts != null) {
 				_cts.Cancel();
 				_cts.Dispose();
@@ -80,7 +84,7 @@ namespace com.parkminpackages.packagemanager.Editor
 			};
 
 			//_refreshButton 구현
-			refreshButton.clicked += () => { CreateGUI(true); };
+			refreshButton.clicked += () => { CreateGUIAsync(true); };
 
 			//아이템 채우기 구현
 			try {
