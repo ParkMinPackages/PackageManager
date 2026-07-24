@@ -26,7 +26,7 @@ namespace com.parkminpackages.packagemanager.Editor
 			foreach (PackageCatalogEntry entry in catalog.packages ?? new List<PackageCatalogEntry>()) {
 				if (string.IsNullOrWhiteSpace(entry.packageName) || string.IsNullOrWhiteSpace(entry.gitUrl)) continue;
 
-				PackageInfo unityPackageInfo = unityPackageCollection.FirstOrDefault(info => info.name == entry.packageName);
+				UnityEditor.PackageManager.PackageInfo unityPackageInfo = unityPackageCollection.FirstOrDefault(info => info.name == entry.packageName);
 				packageDatas.Add(new PackageData {
 					RepoName = entry.repository,
 					DisplayName = string.IsNullOrWhiteSpace(entry.displayName) ? entry.packageName : entry.displayName,
@@ -54,9 +54,9 @@ namespace com.parkminpackages.packagemanager.Editor
 				EditorPrefs.SetString(CatalogCacheTicksKey, DateTime.UtcNow.Ticks.ToString());
 				return catalog;
 			}
-			catch (Exception exception) when (TryLoadCachedCatalog(true, out PackageCatalog cachedCatalog)) {
+			catch (Exception exception) when (TryLoadCachedCatalog(true, out PackageCatalog fallbackCatalog)) {
 				Debug.LogWarning($"Failed to refresh the package catalog. Using cached data instead. {exception.Message}");
-				return cachedCatalog;
+				return fallbackCatalog;
 			}
 		}
 

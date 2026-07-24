@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [2.1.1] - 2026-07-25
+
+### Fixed
+- Fixed Unity editor compilation errors in package catalog loading.
+
 ## [2.1.0] - 2026-07-25
 
 ### Changed
