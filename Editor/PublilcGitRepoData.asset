@@ -31,9 +31,3 @@ MonoBehaviour:
   - DisplayName: gitamend.unityutils
     CloneURL: https://github.com/adammyhre/Unity-Utils.git
     PackageName: com.gitamend.unityutils
-  - DisplayName: Navigathena#1.1.0
-    CloneURL: https://github.com/mackysoft/Navigathena.git?path=Assets/MackySoft/MackySoft.Navigathena#1.1.0
-    PackageName: com.mackysoft.navigathena
-  - DisplayName: MySceneManager#4.1.1
-    CloneURL: https://github.com/mygamedevtools/scene-loader.git#upm/4.1.1
-    PackageName: com.mygamedevtools.scene-loader
