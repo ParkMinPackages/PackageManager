@@ -72,12 +72,10 @@ namespace com.mutant.packagemanager.Editor
 
 		//Internal
 		static async Awaitable<string> SendBearerRequestAsync(UnityWebRequest request, string personalAccessToken) {
-			if (string.IsNullOrWhiteSpace(personalAccessToken))
-				throw new ArgumentException("personalAccessToken is null or empty.", nameof(personalAccessToken));
-
-			request.SetRequestHeader("Authorization", "Bearer " + personalAccessToken);
+			if (!string.IsNullOrWhiteSpace(personalAccessToken))
+				request.SetRequestHeader("Authorization", "Bearer " + personalAccessToken);
 			request.SetRequestHeader("Accept", "application/vnd.github+json");
-			request.SetRequestHeader("User-Agent", "Mutant Custom PackageManagerTool");
+			request.SetRequestHeader("User-Agent", "ParkMinPackages PackageManager");
 
 			await request.SendWebRequest();
 

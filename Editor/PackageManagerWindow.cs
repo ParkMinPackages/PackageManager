@@ -22,7 +22,7 @@ namespace com.mutant.packagemanager.Editor
 
 			//초기화
 			string personalAccessToken = PersonalAccessTokenManager.LoadToken();
-			string organization = "Mutant-UnityPackages";
+			string organization = "ParkMinPackages";
 			string[] exceptRepos = new string[] { "Package-Dev" };
 
 			VisualTreeAsset mainTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
@@ -61,13 +61,11 @@ namespace com.mutant.packagemanager.Editor
 			};
 
 			//PersonalAccessToken UI 구현
-			UpdatePersonalAccessTokenFoldout(personalAccessTokenFoldout);
 			personalAccessTokenTextField.value = PersonalAccessTokenManager.LoadToken();
 			personalAccessTokenTextField.RegisterValueChangedCallback(evt =>
 			{
 				PersonalAccessTokenManager.SaveToken(evt.newValue);
-				UpdatePersonalAccessTokenFoldout(personalAccessTokenFoldout);
-			});
+				});
 
 			//_installSelectedButton 구현
 			installSelectedButton.clicked += async () =>
@@ -136,17 +134,6 @@ namespace com.mutant.packagemanager.Editor
 		}
 
 		CancellationTokenSource _cts;
-		void UpdatePersonalAccessTokenFoldout(Foldout foldout) {
-			if (string.IsNullOrEmpty(PersonalAccessTokenManager.LoadToken())) {
-				foldout.text = "Git Personal Access Token을 입력해주세요.";
-				foldout.style.color = Color.red;
-			}
-			else {
-				foldout.text = "Git Personal Access Token";
-				foldout.style.color = new StyleColor(StyleKeyword.Null);
-			}
-		}
-
 
 		//Type
 		class PublicGitItemUI : GitItemUI

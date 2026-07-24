@@ -1,8 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Label text="Mutant Package Manager" name="Title" style="-unity-text-align: upper-center; -unity-font-style: bold; color: rgb(0, 255, 37);"/>
+    <ui:Label text="ParkMinPackages Package Manager" name="Title" style="-unity-text-align: upper-center; -unity-font-style: bold; color: rgb(0, 255, 37);"/>
     <ui:Button text="Packages Folder" name="PacakgesFolderButton" style="width: 126px; height: 20px; align-self: center;"/>
-    <ui:Foldout text="Git Personal Access Token" value="false" name="PersonalAccessTokenFoldout" style="-unity-font-style: bold;">
-        <ui:TextField label="" placeholder-text="Private Mutant Package를 사용하기 위해서 채워야합니다." name="PersonalAccessTokenTextField"/>
+    <ui:Foldout text="GitHub Personal Access Token (비공개 패키지용)" value="false" name="PersonalAccessTokenFoldout" style="-unity-font-style: bold;">
+        <ui:TextField label="" placeholder-text="공개 패키지는 토큰 없이 사용할 수 있습니다. 비공개 패키지는 GitHub PAT를 입력하세요." name="PersonalAccessTokenTextField"/>
     </ui:Foldout>
     <ui:VisualElement style="flex-grow: initial; flex-shrink: initial; flex-direction: row; justify-content: center;">
         <ui:Button text="Install Selected" name="InstallSelectedButton" enable-rich-text="false" style="width: 130px; height: 20px; align-self: center;"/>

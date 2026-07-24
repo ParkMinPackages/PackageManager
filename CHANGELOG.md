@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [1.1.7] - 2026-07-24
+### Changed
+- Updated GitHub organization discovery to ParkMinPackages.
+- Renamed the Package Manager menu and editor UI to ParkMinPackages.
+- Made the GitHub Personal Access Token optional for public packages; it remains available for private packages.
+
 ## [1.1.2] - 2026-04-07
 ### gitingore 수정해서 .unitypackage 무시안하게 변경
 

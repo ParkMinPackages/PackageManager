@@ -10,7 +10,7 @@ namespace com.mutant.packagemanager.Editor
 	internal static class ClientUtility
 	{
 		static bool _isBusy;
-		const string _progressBarTitle = "Mutant Package Manager";
+		const string _progressBarTitle = "ParkMinPackages Package Manager";
 
 		// =========================
 		// Add
