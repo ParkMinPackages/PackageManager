@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3980b44eab744e9ba0f63b3def88c12, type: 3}
   m_Name: PublilcGitRepoData
-  m_EditorClassIdentifier: Mutant.PackageManager.Editor::com.mutant.packagemanager.Editor.PublilcGitRepoData
+  m_EditorClassIdentifier: ParkMinPackages.PackageManager.Editor::com.parkminpackages.packagemanager.Editor.PublilcGitRepoData
   _value:
   - DisplayName: GlitchEnzo.NuGetForUnity
     CloneURL: https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace com.mutant.packagemanager.Editor
+namespace com.parkminpackages.packagemanager.Editor
 {
 	//[CreateAssetMenu(fileName = "PublilcGitRepoData", menuName = "PublilcGitRepoData", order = 0)]
 	internal class PublilcGitRepoData : ScriptableObject

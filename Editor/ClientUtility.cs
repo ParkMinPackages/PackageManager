@@ -5,7 +5,7 @@ using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
-namespace com.mutant.packagemanager.Editor
+namespace com.parkminpackages.packagemanager.Editor
 {
 	internal static class ClientUtility
 	{

@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [2.0.0] - 2026-07-25
+
+### Breaking Changes
+- Renamed public namespaces and assembly definitions from Mutant to ParkMinPackages.
+- Projects using the previous namespaces or assembly names must update their references.
+
 ## [1.1.7] - 2026-07-24
 ### Changed
 - Updated GitHub organization discovery to ParkMinPackages.

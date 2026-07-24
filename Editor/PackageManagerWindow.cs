@@ -7,7 +7,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace com.mutant.packagemanager.Editor
+namespace com.parkminpackages.packagemanager.Editor
 {
 	internal class PackageManagerWindow : EditorWindow
 	{
@@ -65,7 +65,7 @@ namespace com.mutant.packagemanager.Editor
 			personalAccessTokenTextField.RegisterValueChangedCallback(evt =>
 			{
 				PersonalAccessTokenManager.SaveToken(evt.newValue);
-				});
+			});
 
 			//_installSelectedButton 구현
 			installSelectedButton.clicked += async () =>

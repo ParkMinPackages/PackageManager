@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace com.mutant.packagemanager.Editor
+namespace com.parkminpackages.packagemanager.Editor
 {
 	internal struct PackageData
 	{

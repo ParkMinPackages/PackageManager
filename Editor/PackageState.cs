@@ -1,4 +1,4 @@
-﻿namespace com.mutant.packagemanager.Editor
+﻿namespace com.parkminpackages.packagemanager.Editor
 {
 	internal enum PackageState
 	{

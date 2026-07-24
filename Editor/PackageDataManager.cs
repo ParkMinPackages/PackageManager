@@ -5,7 +5,7 @@ using System.Threading;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
-namespace com.mutant.packagemanager.Editor
+namespace com.parkminpackages.packagemanager.Editor
 {
 	internal static class PackageDataManager
 	{
