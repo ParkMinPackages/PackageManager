@@ -1,11 +1,16 @@
 {
-  "name": "com.mutant.packagemanager",
-  "displayName": "Mutant.PackageManager",
+  "name": "com.parkminpackages.packagemanager",
+  "displayName": "ParkMinPackages.PackageManager",
   "version": "1.1.6",
+  "license": "MIT",
+  "documentationUrl": "https://github.com/ParkMinPackages/PackageManager#readme",
+  "changelogUrl": "https://github.com/ParkMinPackages/PackageManager/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/ParkMinPackages/PackageManager/blob/main/LICENSE.md",
   "unity": "6000.5",
-  "description": "Replace this with your own description of the package. \n\nFor best results, use this text to summarize: \n\u25aa What the package does \n\u25aa How it can benefit the user \n\nNote: Special formatting characters are supported, including line breaks ('\\n') and bullets ('\\u25AA').",
+  "description": "Unity package maintained by ParkMinPackages.",
   "author": {
-    "name": "Mutant"
+    "name": "ParkMinPackages",
+    "url": "https://github.com/ParkMinPackages"
   },
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.2"

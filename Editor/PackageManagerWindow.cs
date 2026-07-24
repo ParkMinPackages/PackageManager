@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,15 +26,15 @@ namespace com.mutant.packagemanager.Editor
 			string[] exceptRepos = new string[] { "Package-Dev" };
 
 			VisualTreeAsset mainTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-				"Packages/com.mutant.packagemanager/Editor/PackageManagerWindow.uxml"
+				"Packages/com.parkminpackages.packagemanager/Editor/PackageManagerWindow.uxml"
 			);
 
 			VisualTreeAsset itemTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-				"Packages/com.mutant.packagemanager/Editor/PackageManagerWindow.Item.uxml"
+				"Packages/com.parkminpackages.packagemanager/Editor/PackageManagerWindow.Item.uxml"
 			);
 
 			PublilcGitRepoData publicGitRepoData = AssetDatabase.LoadAssetAtPath<PublilcGitRepoData>(
-				"Packages/com.mutant.packagemanager/Editor/PublilcGitRepoData.asset"
+				"Packages/com.parkminpackages.packagemanager/Editor/PublilcGitRepoData.asset"
 			);
 
 			rootVisualElement.Clear();
@@ -53,7 +53,7 @@ namespace com.mutant.packagemanager.Editor
 			//pacakgesFolderButton 구현
 			pacakgesFolderButton.clicked += async () =>
 			{
-				UnityEngine.Object folder = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Packages/com.mutant.packagemanager/UnityPackages");
+				UnityEngine.Object folder = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Packages/com.parkminpackages.packagemanager/UnityPackages");
 				Selection.activeObject = folder;
 				EditorUtility.FocusProjectWindow();
 				EditorGUIUtility.PingObject(folder);
