@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace com.parkminpackages.packagemanager.Editor
+namespace ParkMinPackages.PackageManager.Editor
 {
 	internal static class GitRestAPI
 	{

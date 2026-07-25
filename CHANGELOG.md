@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.0.0] - 2026-07-25
+
+### Breaking Changes
+- Changed editor namespaces to the `ParkMinPackages.PackageManager.Editor` convention.
+
+### Fixed
+- Updated serialized package catalog type metadata to the new namespace.
 ## [2.1.2] - 2026-07-25
 
 ### Fixed

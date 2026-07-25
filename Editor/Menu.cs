@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace com.parkminpackages.packagemanager.Editor
+namespace ParkMinPackages.PackageManager.Editor
 {
 	internal class Menu
 	{

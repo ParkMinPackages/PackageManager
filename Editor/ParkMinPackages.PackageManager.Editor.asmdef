@@ -1,6 +1,6 @@
 {
   "name": "ParkMinPackages.PackageManager.Editor",
-  "rootNamespace": "",
+  "rootNamespace": "ParkMinPackages.PackageManager.Editor",
   "references": [],
   "includePlatforms": [
     "Editor"
