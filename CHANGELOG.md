@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.2.0] - 2026-08-16
+
+### Added
+- Added section headers for public Git packages and ParkMinPackages organization packages.
+- Added package version suffixes with a `#최신` fallback for unversioned public Git entries.
+- Added Git dependency version display and installed-version mismatch detection.
+
+### Changed
+- Extended public Git package catalog entries and Git dependency metadata with explicit version information.
+
 ## [5.1.0] - 2026-08-16
 
 ### Added

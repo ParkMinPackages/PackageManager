@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a7f6047e1d42caa31d0b9fe2f74f84, type: 3}
   m_Name: LitMotion
   m_EditorClassIdentifier: ParkMinPackages.PackageManager.Editor::ParkMinPackages.PackageManager.Editor.PublicGitRepoData
-  DisplayName: annulusgames.LitMotion#v2.0.2
+  DisplayName: annulusgames.LitMotion
+  Version: 2.0.2
   CloneURL: https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion#v2.0.2
   PackageName: com.annulusgames.lit-motion
   _gitDependencies: []

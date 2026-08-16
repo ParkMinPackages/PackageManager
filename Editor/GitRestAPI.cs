@@ -57,6 +57,7 @@ namespace ParkMinPackages.PackageManager.Editor
 		{
 			public string name;
 			public string displayName;
+			public string version;
 		}
 		public class PackageDependenciesJson
 		{

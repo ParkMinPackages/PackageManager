@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: UnityUtils
   m_EditorClassIdentifier: ParkMinPackages.PackageManager.Editor::ParkMinPackages.PackageManager.Editor.PublicGitRepoData
   DisplayName: gitamend.unityutils
+  Version:
   CloneURL: https://github.com/adammyhre/Unity-Utils.git
   PackageName: com.gitamend.unityutils
   _gitDependencies: []

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a7f6047e1d42caa31d0b9fe2f74f84, type: 3}
   m_Name: UniTask
   m_EditorClassIdentifier: ParkMinPackages.PackageManager.Editor::ParkMinPackages.PackageManager.Editor.PublicGitRepoData
-  DisplayName: Cysharp.UniTask#2.5.11
+  DisplayName: Cysharp.UniTask
+  Version: 2.5.11
   CloneURL: https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11
   PackageName: com.cysharp.unitask
   _gitDependencies: []

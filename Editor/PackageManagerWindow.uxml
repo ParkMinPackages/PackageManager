@@ -19,7 +19,12 @@
         <ui:Button text="Refresh" name="RefreshButton" style="width: 100px; height: 20px;"/>
         <ui:Toggle text="Show Dependencies" name="ShowDependenciesToggle" style="margin-left: 8px;"/>
     </ui:VisualElement>
-    <ui:ScrollView vertical-scroller-visibility="AlwaysVisible" style="padding-left: 10px; padding-right: 0;"/>
+    <ui:ScrollView vertical-scroller-visibility="AlwaysVisible" style="padding-left: 10px; padding-right: 0;">
+        <ui:Label text="[ Public Git Packages ]" style="margin-top: 6px; margin-bottom: 3px; -unity-font-style: bold; font-size: 15px; color: rgb(138, 180, 248);"/>
+        <ui:VisualElement name="PublicGitPackagesContainer"/>
+        <ui:Label text="[ ParkMinPackages ]" style="margin-top: 10px; margin-bottom: 3px; -unity-font-style: bold; font-size: 15px; color: rgb(138, 180, 248);"/>
+        <ui:VisualElement name="ParkMinPackagesContainer"/>
+    </ui:ScrollView>
     <ui:Label text="Refeshing..." name="RefreshStateLabel"
               style="-unity-text-align: upper-center; -unity-font-style: bold;"/>
 </ui:UXML>

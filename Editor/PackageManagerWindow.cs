@@ -50,6 +50,8 @@ namespace ParkMinPackages.PackageManager.Editor
 			Button refreshButton = rootVisualElement.Q<Button>("RefreshButton");
 			Toggle showDependenciesToggle = rootVisualElement.Q<Toggle>("ShowDependenciesToggle");
 			ScrollView scrollView = rootVisualElement.Q<ScrollView>();
+			VisualElement publicGitPackagesContainer = scrollView.Q<VisualElement>("PublicGitPackagesContainer");
+			VisualElement parkMinPackagesContainer = scrollView.Q<VisualElement>("ParkMinPackagesContainer");
 			Label refreshStateLabel = rootVisualElement.Q<Label>("RefreshStateLabel");
 			List<GitItemUI> itemUiList = new List<GitItemUI>();
 			bool showDependencies = EditorPrefs.GetBool(_showDependenciesEditorPrefsKey, false);
@@ -113,8 +115,9 @@ namespace ParkMinPackages.PackageManager.Editor
 
 				//Public Repo
 				foreach (PublicGitRepoData data in publicGitRepoDatas.Value) {
-					PublicGitItemUI publicGitItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, scrollView,
+					PublicGitItemUI publicGitItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, publicGitPackagesContainer,
 						data.DisplayName,
+						data.Version,
 						data.CloneURL,
 						data.PackageName,
 						afterButtonClickAction
@@ -138,7 +141,15 @@ namespace ParkMinPackages.PackageManager.Editor
 				);
 
 				foreach (PackageData packageData in requestAsync) {
-					GitItemUI eachGitItemUI = new GitItemUI(itemTreeAsset, scrollView, packageData.DisplayName, packageData.GitCloneURL, packageData.PackageName, afterButtonClickAction);
+					GitItemUI eachGitItemUI = new GitItemUI(
+						itemTreeAsset,
+						parkMinPackagesContainer,
+						packageData.DisplayName,
+						packageData.Version,
+						packageData.GitCloneURL,
+						packageData.PackageName,
+						afterButtonClickAction
+					);
 					eachGitItemUI.SetDependencies(packageData.GitDependencies, packageData.NuGetDependencies);
 					eachGitItemUI.SetDependenciesVisible(showDependencies);
 					eachGitItemUI.State = packageData.State;
@@ -166,7 +177,16 @@ namespace ParkMinPackages.PackageManager.Editor
 		//Type
 		class PublicGitItemUI : GitItemUI
 		{
-			public PublicGitItemUI(PackageCollection packageCollection, VisualTreeAsset itemTreeAsset, VisualElement parent, string displayName, string gitURL, string packageName, Action afterButtonClickAction) : base(itemTreeAsset, parent, displayName, gitURL, packageName, afterButtonClickAction) {
+			public PublicGitItemUI(
+				PackageCollection packageCollection,
+				VisualTreeAsset itemTreeAsset,
+				VisualElement parent,
+				string displayName,
+				string version,
+				string gitURL,
+				string packageName,
+				Action afterButtonClickAction
+			) : base(itemTreeAsset, parent, displayName, version, gitURL, packageName, afterButtonClickAction) {
 				UnityEditor.PackageManager.PackageInfo packageInfo = packageCollection.FirstOrDefault(info => info.name == packageName);
 				if (packageInfo != null) {
 					if (packageInfo.source == PackageSource.Embedded) {
@@ -183,10 +203,18 @@ namespace ParkMinPackages.PackageManager.Editor
 
 		class GitItemUI : ItemUI
 		{
-			public GitItemUI(VisualTreeAsset itemTreeAsset, VisualElement parent, string displayName, string gitURL, string packageName, Action afterButtonClickAction) : base(itemTreeAsset, parent) {
+			public GitItemUI(
+				VisualTreeAsset itemTreeAsset,
+				VisualElement parent,
+				string displayName,
+				string version,
+				string gitURL,
+				string packageName,
+				Action afterButtonClickAction
+			) : base(itemTreeAsset, parent) {
 				_gitURL = gitURL;
 				_packageName = packageName;
-				DisplayName = displayName;
+				DisplayName = $"{displayName} #{(string.IsNullOrWhiteSpace(version) ? "최신" : version)}";
 
 				_installButton.clicked += async () =>
 				{

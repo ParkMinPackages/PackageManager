@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a7f6047e1d42caa31d0b9fe2f74f84, type: 3}
   m_Name: SceneReference
   m_EditorClassIdentifier: ParkMinPackages.PackageManager.Editor::ParkMinPackages.PackageManager.Editor.PublicGitRepoData
-  DisplayName: Eflatun.SceneReference#5.0.0
+  DisplayName: Eflatun.SceneReference
+  Version: 5.0.0
   CloneURL: git+https://github.com/starikcetin/Eflatun.SceneReference.git#5.0.0
   PackageName: com.eflatun.scenereference
   _gitDependencies: []

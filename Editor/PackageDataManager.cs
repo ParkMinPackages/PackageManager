@@ -48,6 +48,7 @@ namespace ParkMinPackages.PackageManager.Editor
 				PackageData packageData = new PackageData();
 				packageData.RepoName = repo.name;
 				packageData.DisplayName = remotePackageJson.displayName;
+				packageData.Version = remotePackageJson.version;
 				packageData.GitCloneURL = repo.clone_url;
 				packageData.PackageName = remotePackageJson.name;
 				packageData.CurrentCommitHash = unityPackageInfo == null || unityPackageInfo.git == null ? null : unityPackageInfo.git.hash;

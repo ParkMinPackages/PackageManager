@@ -6,6 +6,7 @@ namespace ParkMinPackages.PackageManager.Editor
 	internal class PublicGitRepoData : ScriptableObject
 	{
 		public string DisplayName;
+		public string Version;
 		[TextArea(4, 50)] public string CloneURL;
 		public string PackageName;
 		public IReadOnlyList<GitDependency> GitDependencies

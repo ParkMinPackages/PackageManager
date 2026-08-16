@@ -46,12 +46,22 @@ namespace ParkMinPackages.PackageManager.Editor
 			}
 
 			return dependencies
-				.Select(dependency => new PackageDependencyData {
-					Name = dependency.PackageName,
-					URL = dependency.URL,
-					State = _unityPackageCollection.Any(packageInfo => string.Equals(packageInfo.name, dependency.PackageName, StringComparison.OrdinalIgnoreCase))
-						? PackageDependencyState.Installed
-						: PackageDependencyState.NotInstalled
+				.Select(dependency => {
+					PackageInfo installedPackage = _unityPackageCollection.FirstOrDefault(
+						packageInfo => string.Equals(packageInfo.name, dependency.PackageName, StringComparison.OrdinalIgnoreCase)
+					);
+
+					return new PackageDependencyData {
+						Name = dependency.PackageName,
+						Version = dependency.Version,
+						URL = dependency.URL,
+						InstalledVersion = installedPackage?.version,
+						State = installedPackage == null
+							? PackageDependencyState.NotInstalled
+							: string.IsNullOrWhiteSpace(dependency.Version) || string.Equals(installedPackage.version, dependency.Version, StringComparison.OrdinalIgnoreCase)
+								? PackageDependencyState.Installed
+								: PackageDependencyState.VersionMismatch
+					};
 				})
 				.ToArray();
 		}

@@ -8,6 +8,7 @@ namespace ParkMinPackages.PackageManager.Editor
 	internal class GitDependency
 	{
 		[JsonProperty("packageName")] public string PackageName;
+		[JsonProperty("version")] public string Version;
 		[JsonProperty("url")] public string URL;
 	}
 
@@ -39,6 +40,7 @@ namespace ParkMinPackages.PackageManager.Editor
 	{
 		public string RepoName;
 		public string DisplayName;
+		public string Version;
 		public string GitCloneURL;
 		public string PackageName;
 		public string RemoteCommitHash;

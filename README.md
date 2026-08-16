@@ -15,6 +15,7 @@ ParkMinPackages 조직의 Unity 패키지를 조회하고 관리하는 Editor �
   "gitDependencies": [
     {
       "packageName": "com.parkminpackages.foundation",
+      "version": "5.4.2",
       "url": "https://github.com/ParkMinPackages/Foundation.git"
     }
   ],
