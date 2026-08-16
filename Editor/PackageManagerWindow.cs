@@ -11,6 +11,8 @@ namespace ParkMinPackages.PackageManager.Editor
 {
 	internal class PackageManagerWindow : EditorWindow
 	{
+		const string _showDependenciesEditorPrefsKey = "ParkMinPackages.PackageManager.ShowDependencies";
+
 		async Awaitable CreateGUI() {
 			if (_cts != null) {
 				_cts.Cancel();
@@ -33,8 +35,8 @@ namespace ParkMinPackages.PackageManager.Editor
 				"Packages/com.parkminpackages.packagemanager/Editor/PackageManagerWindow.Item.uxml"
 			);
 
-			PublilcGitRepoData publicGitRepoData = AssetDatabase.LoadAssetAtPath<PublilcGitRepoData>(
-				"Packages/com.parkminpackages.packagemanager/Editor/PublilcGitRepoData.asset"
+			PublicGitRepoDatas publicGitRepoDatas = AssetDatabase.LoadAssetAtPath<PublicGitRepoDatas>(
+				"Packages/com.parkminpackages.packagemanager/PublicGitRepoDatas/PublicGitRepoDatas.asset"
 			);
 
 			rootVisualElement.Clear();
@@ -46,9 +48,12 @@ namespace ParkMinPackages.PackageManager.Editor
 			Button installSelectedButton = rootVisualElement.Q<Button>("InstallSelectedButton");
 			Button removeSelectedButton = rootVisualElement.Q<Button>("RemoveSelectedButton");
 			Button refreshButton = rootVisualElement.Q<Button>("RefreshButton");
+			Toggle showDependenciesToggle = rootVisualElement.Q<Toggle>("ShowDependenciesToggle");
 			ScrollView scrollView = rootVisualElement.Q<ScrollView>();
 			Label refreshStateLabel = rootVisualElement.Q<Label>("RefreshStateLabel");
 			List<GitItemUI> itemUiList = new List<GitItemUI>();
+			bool showDependencies = EditorPrefs.GetBool(_showDependenciesEditorPrefsKey, false);
+			showDependenciesToggle.SetValueWithoutNotify(showDependencies);
 
 			//pacakgesFolderButton 구현
 			pacakgesFolderButton.clicked += async () =>
@@ -65,6 +70,14 @@ namespace ParkMinPackages.PackageManager.Editor
 			personalAccessTokenTextField.RegisterValueChangedCallback(evt =>
 			{
 				PersonalAccessTokenManager.SaveToken(evt.newValue);
+			});
+			showDependenciesToggle.RegisterValueChangedCallback(evt =>
+			{
+				showDependencies = evt.newValue;
+				EditorPrefs.SetBool(_showDependenciesEditorPrefsKey, showDependencies);
+				foreach (GitItemUI itemUI in itemUiList) {
+					itemUI.SetDependenciesVisible(showDependencies);
+				}
 			});
 
 			//_installSelectedButton 구현
@@ -94,25 +107,40 @@ namespace ParkMinPackages.PackageManager.Editor
 					CreateGUI();
 				};
 
-				PackageCollection packageCollection = await ClientUtility.ListAsync();
+				PackageCollection packageCollection = await ClientUtility.ListAsync(true);
 				if (_cts.IsCancellationRequested) throw new OperationCanceledException();
+				PackageDependencyResolver dependencyResolver = new PackageDependencyResolver(packageCollection);
 
 				//Public Repo
-				foreach (PublilcGitRepoData.Data data in publicGitRepoData.Value) {
+				foreach (PublicGitRepoData data in publicGitRepoDatas.Value) {
 					PublicGitItemUI publicGitItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, scrollView,
 						data.DisplayName,
 						data.CloneURL,
 						data.PackageName,
 						afterButtonClickAction
 					);
+					publicGitItemUI.SetDependencies(
+						dependencyResolver.ResolveGit(data.GitDependencies),
+						dependencyResolver.ResolveNuGet(data.NuGetDependencies)
+					);
+					publicGitItemUI.SetDependenciesVisible(showDependencies);
 					itemUiList.Add(publicGitItemUI);
 				}
 
 				//Private Organization Repo
-				List<PackageData> requestAsync = await PackageDataManager.RequestToOrganizationAsync(personalAccessToken, organization, exceptRepos, _cts.Token);
+				List<PackageData> requestAsync = await PackageDataManager.RequestToOrganizationAsync(
+					personalAccessToken,
+					organization,
+					exceptRepos,
+					packageCollection,
+					dependencyResolver,
+					_cts.Token
+				);
 
 				foreach (PackageData packageData in requestAsync) {
 					GitItemUI eachGitItemUI = new GitItemUI(itemTreeAsset, scrollView, packageData.DisplayName, packageData.GitCloneURL, packageData.PackageName, afterButtonClickAction);
+					eachGitItemUI.SetDependencies(packageData.GitDependencies, packageData.NuGetDependencies);
+					eachGitItemUI.SetDependenciesVisible(showDependencies);
 					eachGitItemUI.State = packageData.State;
 					itemUiList.Add(eachGitItemUI);
 				}
@@ -195,6 +223,7 @@ namespace ParkMinPackages.PackageManager.Editor
 				_toggle = templateContainer.Q<Toggle>();
 				_displayNameLabel = templateContainer.Q<Label>("DisplayNameLabel");
 				_stateLabel = templateContainer.Q<Label>("StateLabel");
+				_dependenciesContainer = templateContainer.Q<VisualElement>("DependenciesContainer");
 				_installButton = templateContainer.Q<Button>("InstallButton");
 				_removeButton = templateContainer.Q<Button>("RemoveButton");
 				_embedButton = templateContainer.Q<Button>("EmbedButton");
@@ -204,7 +233,19 @@ namespace ParkMinPackages.PackageManager.Editor
 				parent.Add(templateContainer);
 			}
 
-
+			public void SetDependencies(
+				IReadOnlyList<PackageDependencyData> gitDependencies,
+				IReadOnlyList<PackageDependencyData> nuGetDependencies
+			) {
+				_dependenciesContainer.Clear();
+				AddDependencyRows("Git", gitDependencies);
+				AddDependencyRows("NuGet", nuGetDependencies);
+				UpdateDependenciesVisibility();
+			}
+			public void SetDependenciesVisible(bool visible) {
+				_showDependencies = visible;
+				UpdateDependenciesVisibility();
+			}
 			public PackageState State
 			{
 				get { return _state; }
@@ -262,11 +303,75 @@ namespace ParkMinPackages.PackageManager.Editor
 			protected Toggle _toggle;
 			protected Label _displayNameLabel;
 			protected Label _stateLabel;
+			protected VisualElement _dependenciesContainer;
 			protected Button _installButton;
 			protected Button _removeButton;
 			protected Button _embedButton;
 			PackageState _state;
 			string _displayName;
+			bool _showDependencies;
+
+			void AddDependencyRows(
+				string category,
+				IReadOnlyList<PackageDependencyData> dependencies
+			) {
+				if (dependencies == null || dependencies.Count == 0) {
+					return;
+				}
+
+				foreach (PackageDependencyData dependency in dependencies) {
+					VisualElement dependencyRow = new VisualElement();
+					dependencyRow.style.flexDirection = FlexDirection.Row;
+					dependencyRow.style.justifyContent = Justify.SpaceBetween;
+
+					string version = string.IsNullOrWhiteSpace(dependency.Version) ? string.Empty : $" {dependency.Version}";
+					Label dependencyNameLabel = new Label($"{category} · {dependency.Name}{version}");
+					dependencyNameLabel.style.flexGrow = 1;
+					dependencyNameLabel.tooltip = dependency.URL;
+
+					Label dependencyStateLabel = new Label(GetDependencyStateText(dependency));
+					dependencyStateLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+					dependencyStateLabel.style.color = GetDependencyStateColor(dependency.State);
+
+					dependencyRow.Add(dependencyNameLabel);
+					dependencyRow.Add(dependencyStateLabel);
+					_dependenciesContainer.Add(dependencyRow);
+				}
+			}
+			void UpdateDependenciesVisibility() {
+				_dependenciesContainer.style.display = _showDependencies && _dependenciesContainer.childCount > 0
+					? DisplayStyle.Flex
+					: DisplayStyle.None;
+			}
+			static string GetDependencyStateText(PackageDependencyData dependency) {
+				switch (dependency.State) {
+					case PackageDependencyState.Installed:
+						return "설치됨";
+					case PackageDependencyState.NotInstalled:
+						return "설치안됨";
+					case PackageDependencyState.VersionMismatch:
+						return string.IsNullOrWhiteSpace(dependency.InstalledVersion)
+							? "버전 불일치"
+							: $"버전 불일치 ({dependency.InstalledVersion})";
+					case PackageDependencyState.Unavailable:
+						return "확인 불가";
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
+			static StyleColor GetDependencyStateColor(PackageDependencyState state) {
+				switch (state) {
+					case PackageDependencyState.Installed:
+						return new StyleColor(Color.green);
+					case PackageDependencyState.NotInstalled:
+					case PackageDependencyState.VersionMismatch:
+						return new StyleColor(Color.yellow);
+					case PackageDependencyState.Unavailable:
+						return new StyleColor(StyleKeyword.Null);
+					default:
+						throw new ArgumentOutOfRangeException(nameof(state), state, null);
+				}
+			}
 		}
 	}
 }

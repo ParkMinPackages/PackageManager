@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3980b44eab744e9ba0f63b3def88c12, type: 3}
+  m_Name: PublicGitRepoDatas
+  m_EditorClassIdentifier: ParkMinPackages.PackageManager.Editor::ParkMinPackages.PackageManager.Editor.PublicGitRepoDatas
+  _value:
+  - {fileID: 11400000, guid: 11d7f9c4b2e743ad915aa56f52a1a71e, type: 2}
+  - {fileID: 11400000, guid: 43c01b0e7d6c4d90963e29f95a342cbb, type: 2}
+  - {fileID: 11400000, guid: 8cf47d88c0154cc2bfbd9810721f90d2, type: 2}
+  - {fileID: 11400000, guid: 268a08d5192448b78fc25c4744eacfa8, type: 2}
+  - {fileID: 11400000, guid: f516b69922894e26b2599b2cd80356f7, type: 2}
+  - {fileID: 11400000, guid: bf6f60a1e2864e19b0a0c667821fa787, type: 2}

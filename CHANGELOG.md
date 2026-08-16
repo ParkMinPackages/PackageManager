@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.1.0] - 2026-08-16
+
+### Added
+- Added Git and NuGet dependency discovery through repository `parkmin-dependencies.json` files.
+- Added dependency visibility controls and installed, missing, and version-mismatch status indicators.
+- Added ScriptableObject-based public Git package catalog entries and an Inspector creation workflow.
+
+### Changed
+- Unified public and organization package dependency resolution through a shared resolver.
+- Split the public Git package catalog into individually editable data assets.
+
+### Fixed
+- Escaped branch names when requesting branch information from GitHub.
+
 ## [5.0.0] - 2026-07-25
 
 ### Breaking Changes

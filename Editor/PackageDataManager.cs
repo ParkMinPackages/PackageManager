@@ -15,13 +15,16 @@ namespace ParkMinPackages.PackageManager.Editor
 		// }
 
 
-		public static async Awaitable<List<PackageData>> RequestToOrganizationAsync(string personalAccessToken, string organization, string[] exceptRepos, CancellationToken cancellationToken) {
+		public static async Awaitable<List<PackageData>> RequestToOrganizationAsync(
+			string personalAccessToken,
+			string organization,
+			string[] exceptRepos,
+			PackageCollection unityPackageCollection,
+			PackageDependencyResolver dependencyResolver,
+			CancellationToken cancellationToken
+		) {
 			List<PackageData> packageDatas = new List<PackageData>();
-
 			HashSet<string> exceptRepoSet = new HashSet<string>(exceptRepos);
-
-			PackageCollection unityPackageCollection = await ClientUtility.ListAsync();
-			if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
 			List<GitRestAPI.Repo> repoList = await GitRestAPI.GetOrganizationReposAsync(personalAccessToken, organization);
 			if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
@@ -31,6 +34,9 @@ namespace ParkMinPackages.PackageManager.Editor
 					continue;
 
 				GitRestAPI.PackageJson remotePackageJson = await GitRestAPI.GetPackageJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch);
+				if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
+				GitRestAPI.PackageDependenciesJson remoteDependenciesJson = await GitRestAPI.GetPackageDependenciesJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch);
 				if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
 				string remoteLastCommitHash = await GitRestAPI.GetOrganizationLastCommitHashAsync(personalAccessToken, organization, repo.name, repo.default_branch);
@@ -47,6 +53,8 @@ namespace ParkMinPackages.PackageManager.Editor
 				packageData.CurrentCommitHash = unityPackageInfo == null || unityPackageInfo.git == null ? null : unityPackageInfo.git.hash;
 				packageData.RemoteCommitHash = remoteLastCommitHash;
 				packageData.IsEmbed = unityPackageInfo == null ? false : unityPackageInfo.source == PackageSource.Embedded;
+				packageData.GitDependencies = dependencyResolver.ResolveGit(remoteDependenciesJson.gitDependencies);
+				packageData.NuGetDependencies = dependencyResolver.ResolveNuGet(remoteDependenciesJson.nugetDependencies);
 
 				packageDatas.Add(packageData);
 			}

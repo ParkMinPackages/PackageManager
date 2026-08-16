@@ -15,7 +15,10 @@
         <ui:Button text="Remove Selected" name="RemoveSelectedButton" enable-rich-text="false"
                    style="width: 130px; height: 20px; align-self: center;"/>
     </ui:VisualElement>
-    <ui:Button text="Refresh" name="RefreshButton" style="width: 100px; height: 20px; align-self: center;"/>
+    <ui:VisualElement style="flex-grow: initial; flex-shrink: initial; flex-direction: row; justify-content: center; align-items: center;">
+        <ui:Button text="Refresh" name="RefreshButton" style="width: 100px; height: 20px;"/>
+        <ui:Toggle text="Show Dependencies" name="ShowDependenciesToggle" style="margin-left: 8px;"/>
+    </ui:VisualElement>
     <ui:ScrollView vertical-scroller-visibility="AlwaysVisible" style="padding-left: 10px; padding-right: 0;"/>
     <ui:Label text="Refeshing..." name="RefreshStateLabel"
               style="-unity-text-align: upper-center; -unity-font-style: bold;"/>
