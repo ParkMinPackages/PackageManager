@@ -1,7 +1,7 @@
 {
   "name": "com.parkminpackages.packagemanager",
   "displayName": "ParkMinPackages.PackageManager",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "license": "MIT",
   "documentationUrl": "https://github.com/ParkMinPackages/PackageManager#readme",
   "changelogUrl": "https://github.com/ParkMinPackages/PackageManager/blob/main/CHANGELOG.md",

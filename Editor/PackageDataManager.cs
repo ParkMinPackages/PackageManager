@@ -33,10 +33,18 @@ namespace ParkMinPackages.PackageManager.Editor
 				if (exceptRepoSet.Contains(repo.name))
 					continue;
 
-				GitRestAPI.PackageJson remotePackageJson = await GitRestAPI.GetPackageJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch);
+				GitRestAPI.PackageDependenciesJson remoteDependenciesJson = await GitRestAPI.GetPackageDependenciesJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch);
 				if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
-				GitRestAPI.PackageDependenciesJson remoteDependenciesJson = await GitRestAPI.GetPackageDependenciesJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch);
+				string[] packagePathSegments = string.IsNullOrWhiteSpace(remoteDependenciesJson.packagePath)
+					? Array.Empty<string>()
+					: remoteDependenciesJson.packagePath.Replace('\\', '/').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+				if (packagePathSegments.Any(segment => segment == "." || segment == "..")) {
+					throw new InvalidOperationException($"Invalid packagePath in {repo.name}/parkmin-dependencies.json");
+				}
+
+				string packagePath = string.Join("/", packagePathSegments);
+				GitRestAPI.PackageJson remotePackageJson = await GitRestAPI.GetPackageJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch, packagePath);
 				if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
 				string remoteLastCommitHash = await GitRestAPI.GetOrganizationLastCommitHashAsync(personalAccessToken, organization, repo.name, repo.default_branch);
@@ -49,7 +57,9 @@ namespace ParkMinPackages.PackageManager.Editor
 				packageData.RepoName = repo.name;
 				packageData.DisplayName = remotePackageJson.displayName;
 				packageData.Version = remotePackageJson.version;
-				packageData.GitCloneURL = repo.clone_url;
+				packageData.GitCloneURL = string.IsNullOrEmpty(packagePath)
+					? repo.clone_url
+					: $"{repo.clone_url}?path=/{string.Join("/", packagePathSegments.Select(Uri.EscapeDataString))}";
 				packageData.PackageName = remotePackageJson.name;
 				packageData.CurrentCommitHash = unityPackageInfo == null || unityPackageInfo.git == null ? null : unityPackageInfo.git.hash;
 				packageData.RemoteCommitHash = remoteLastCommitHash;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -39,8 +40,9 @@ namespace ParkMinPackages.PackageManager.Editor
 		}
 
 		//GetPackageJsonAsync
-		public static async Awaitable<PackageJson> GetPackageJsonAsync(string personalAccessToken, string organization, string repoName, string branch) {
-			string decodedJson = await GetRepositoryFileAsync(personalAccessToken, organization, repoName, branch, "package.json", false);
+		public static async Awaitable<PackageJson> GetPackageJsonAsync(string personalAccessToken, string organization, string repoName, string branch, string packagePath) {
+			string packageJsonPath = string.IsNullOrWhiteSpace(packagePath) ? "package.json" : $"{packagePath}/package.json";
+			string decodedJson = await GetRepositoryFileAsync(personalAccessToken, organization, repoName, branch, packageJsonPath, false);
 			PackageJson result = JsonConvert.DeserializeObject<PackageJson>(decodedJson);
 			return result;
 		}
@@ -62,6 +64,7 @@ namespace ParkMinPackages.PackageManager.Editor
 		public class PackageDependenciesJson
 		{
 			public int schemaVersion;
+			public string packagePath;
 			public List<GitDependency> gitDependencies = new List<GitDependency>();
 			public List<NuGetDependency> nugetDependencies = new List<NuGetDependency>();
 		}
@@ -73,12 +76,13 @@ namespace ParkMinPackages.PackageManager.Editor
 			string organization,
 			string repoName,
 			string branch,
-			string fileName,
+			string filePath,
 			bool allowNotFound
 		) {
 			string escapedBranch = UnityWebRequest.EscapeURL(branch);
-			string escapedFileName = UnityWebRequest.EscapeURL(fileName);
-			string url = $"https://api.github.com/repos/{organization}/{repoName}/contents/{escapedFileName}?ref={escapedBranch}";
+			string normalizedFilePath = filePath.Replace('\\', '/').Trim('/');
+			string escapedFilePath = string.Join("/", normalizedFilePath.Split('/').Select(UnityWebRequest.EscapeURL));
+			string url = $"https://api.github.com/repos/{organization}/{repoName}/contents/{escapedFilePath}?ref={escapedBranch}";
 
 			using (UnityWebRequest request = UnityWebRequest.Get(url)) {
 				string json = await SendBearerRequestAsync(request, personalAccessToken, allowNotFound);
@@ -89,7 +93,7 @@ namespace ParkMinPackages.PackageManager.Editor
 				JObject obj = JObject.Parse(json);
 				string base64 = obj["content"]?.ToString();
 				if (string.IsNullOrEmpty(base64)) {
-					throw new Exception($"{fileName} not found");
+					throw new Exception($"{filePath} not found");
 				}
 
 				base64 = base64.Replace("\n", "").Replace("\r", "");

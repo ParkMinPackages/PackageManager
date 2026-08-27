@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.2.1] - 2026-08-27
+
+### Added
+- Added repository subdirectory package discovery through `parkmin-dependencies.json` `packagePath` values.
+
+### Changed
+- Generated Git installation URLs with the Unity Package Manager `?path=/...` query when a package is stored below the repository root.
+
 ## [5.2.0] - 2026-08-16
 
 ### Added
